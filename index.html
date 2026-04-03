@@ -1,20 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Descarga</title>
+  <style>
+    :root{
+      --bg:#000;
+      --blue:#1e6bff;
+      --green:#22c55e;
+      --gray:#666;
+      --white:#fff;
+      --black:#000;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--white);
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:24px 14px 40px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:560px;
+    }
+
+    h1{
+      text-align:center;
+      margin:0 0 22px;
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+
+    .step-btn,
+    .continue-btn{
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:22px 18px;
+      font-size:30px;
+      font-weight:900;
+      cursor:pointer;
+      transition: background-color .25s ease, color .25s ease, transform .15s ease, opacity .2s ease;
+      margin-bottom:16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .step-btn{
+      background:var(--blue);
+      color:var(--white);
+    }
+
+    .step-btn:active,
+    .continue-btn:active{
+      transform: scale(.99);
+    }
+
+    .step-btn.done{
+      background:var(--green);
+      color:var(--black);
+    }
+
+    .step-btn.done::after{
+      content:" ✓";
+    }
+
+    .continue-btn{
+      background:var(--gray);
+      color:#d9d9d9;
+      cursor:not-allowed;
+      opacity:.85;
+    }
+
+    .continue-btn.enabled{
+      background:var(--green);
+      color:var(--black);
+      cursor:pointer;
+      opacity:1;
+    }
+
+    .hint{
+      text-align:center;
+      font-size:14px;
+      opacity:.75;
+      margin-top:8px;
+    }
+
+    @media (max-width: 420px){
+      h1{ font-size:28px; }
+      .step-btn,
+      .continue-btn{ font-size:24px; padding:18px 14px; border-radius:16px; }
+    }
+  </style>
 </head>
-<body style="text-align:center; font-family:sans-serif;">
-  <h1>Descargar Skin</h1>
+<body>
+  <div class="wrap">
+    <h1>CONTENIDO GRATIS</h1>
 
-  <p>Paso 1: Suscribite a mi canal</p>
-  <p>Paso 2: Dale like al video</p>
-  <p>Paso 3: Comentá</p>
+    <button class="step-btn" id="btn1" type="button">SUSCRÍBETE</button>
+    <button class="step-btn" id="btn2" type="button">DALE LIKE</button>
+    <button class="step-btn" id="btn3" type="button">COMENTA</button>
 
-  <br>
+    <button class="continue-btn" id="continueBtn" type="button" disabled>CONTINUAR</button>
 
-  <a href="https://www.mediafire.com/file/esb5rlbooi0he6h/textura+hip+hop+blo.zip/file">
-    <button style="font-size:20px;">DESCARGAR</button>
-  </a>
+    <div class="hint">Completá los 3 pasos para habilitar continuar.</div>
+  </div>
 
+  <script>
+    const steps = [
+      {
+        id: "btn1",
+        url: "https://youtube.com/@kashi_xdd?si=Xx23u0gQmgc7hZpo"
+      },
+      {
+        id: "btn2",
+        url: "https://youtu.be/0F6L6gK9iiU?si=40HRS6LmYoFun38l"
+      },
+      {
+        id: "btn3",
+        url: "https://youtu.be/0F6L6gK9iiU?si=40HRS6LmYoFun38l"
+      }
+    ];
+
+    const completed = [false, false, false];
+
+    function updateContinueButton() {
+      const allDone = completed.every(Boolean);
+      const continueBtn = document.getElementById("continueBtn");
+      if (allDone) {
+        continueBtn.disabled = false;
+        continueBtn.classList.add("enabled");
+      }
+    }
+
+    steps.forEach((step, index) => {
+      const btn = document.getElementById(step.id);
+
+      btn.addEventListener("click", () => {
+        window.open(step.url, "_blank", "noopener,noreferrer");
+
+        if (completed[index]) return;
+
+        btn.disabled = true;
+
+        setTimeout(() => {
+          btn.classList.add("done");
+          completed[index] = true;
+          updateContinueButton();
+        }, 5000);
+      });
+    });
+
+    const continueBtn = document.getElementById("continueBtn");
+    continueBtn.addEventListener("click", () => {
+      if (continueBtn.disabled) return;
+      window.location.href = "https://www.mediafire.com/file/esb5rlbooi0he6h/textura+hip+hop+blo.zip/file";
+    });
+  </script>
 </body>
 </html>
